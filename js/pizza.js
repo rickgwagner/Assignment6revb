@@ -7,6 +7,14 @@ function hideTotal() {
 if (document.addEventListener) {
     document.addEventListener("DOMContentLoaded", hideTotal, false);
 }
+//  Set focus to name field on load
+function firstFocus() {
+    "use strict";
+    document.pizzaForm.name.focus();
+}
+if (document.addEventListener) {
+    document.addEventListener("DOMContentLoaded", firstFocus, false);
+}
 
 //  Hide "Other" field unless "Other" option is chosen in dropdown
 var selectLocation = document.getElementById('location'),
@@ -25,97 +33,85 @@ if (window.addEventListener) {
 }
 //  Write a function to validate and ensure that the user enters a value (or makes a selection) for each of the form items here. Use regular expressions to ensure that their name doesn’t contain any numbers and that their zip code, phone number, and email address are formatted correctly. Make sure that the user only enters two alpha characters in the state field.  
 
-function validate() {
+//  Run validation when leaving name field
+document.getElementById("name").addEventListener("blur", function () {
     "use strict";
     var theName = document.pizzaForm.name.value,
-        nameExp = /^([a-zA-Z ]){2,30}$/,
-        theState = document.pizzaForm.state.value,
-        stateExp = /[0-9]/,
-        zipExp = /^[0-9]{5}(?:-[0-9]{4})?$/,
-        theZip = document.pizzaForm.zipcode.value,
-        phoneExp = /^(()?\d{3}())?(-|\s)?\d{3}(-|\s)?\d{4}$/,
-        thePhone = document.pizzaForm.phone.value,
-        emailExp = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/,
-        theEmail = document.pizzaForm.email.value;
-
+        nameExp = /^([a-zA-Z ]){2,30}$/;
     if (nameExp.test(theName) === false) {
         window.alert("Please provide your name");
         document.pizzaForm.name.focus();
         return false;
     }
+});
+
+//  Run validation when leaving address field
+document.getElementById("street").addEventListener("blur", function () {
+    "use strict";
     if (document.pizzaForm.street.value === "") {
         window.alert("Please provide your street address");
         document.pizzaForm.street.focus();
         return false;
     }
+});
+
+//  Run validation when leaving city field
+document.getElementById("city").addEventListener("blur", function () {
+    "use strict";
     if (document.pizzaForm.city.value === "") {
         window.alert("Please provide your city");
         document.pizzaForm.city.focus();
         return false;
     }
+});
+
+//  Run validation when leaving state field
+document.getElementById("state").addEventListener("blur", function () {
+    "use strict";
+    var theState = document.pizzaForm.state.value,
+        stateExp = /[0-9]/;
     if (document.pizzaForm.state.value === "" || document.pizzaForm.state.value.length !== 2 || stateExp.test(theState) === true) {
         window.alert("Please enter a state in 2 letters");
         document.pizzaForm.state.focus();
         return false;
     }
+});
+
+//  Run validation when leaving zipcode field
+document.getElementById("zipcode").addEventListener("blur", function () {
+    "use strict";
+    var zipExp = /^[0-9]{5}(?:-[0-9]{4})?$/,
+        theZip = document.pizzaForm.zipcode.value;
     if (document.pizzaForm.zipcode.value === "" || zipExp.test(theZip) === false) {
         window.alert("Please provide a valid zipcode.");
         document.pizzaForm.zipcode.focus();
         return false;
     }
+});
+
+//  Run validation when leaving phone field
+document.getElementById("phone").addEventListener("blur", function () {
+    "use strict";
+    var phoneExp = /^(()?\d{3}())?(-|\s)?\d{3}(-|\s)?\d{4}$/,
+        thePhone = document.pizzaForm.phone.value;
     if (document.pizzaForm.phone.value === "" || phoneExp.test(thePhone) === false) {
         window.alert("Please provide your Phone number");
         document.pizzaForm.phone.focus();
         return false;
     }
+});
+
+//  Run validation when leaving email field
+document.getElementById("email").addEventListener("blur", function () {
+    "use strict";
+    var emailExp = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/,
+        theEmail = document.pizzaForm.email.value;
     if (document.pizzaForm.email.value === "" || emailExp.test(theEmail) === false) {
         window.alert("Please provide your Email");
         document.pizzaForm.email.focus();
         return false;
     }
-    return (true);
-}
-////  Run validate function when leaving name field
-//document.getElementById("name").addEventListener("blur", function () {
-//    "use strict";
-//    validate();
-//});
-//
-////  Run validate function when leaving address field
-//document.getElementById("street").addEventListener("blur", function () {
-//    "use strict";
-//    validate();
-//});
-//
-////  Run validate function when leaving city field
-//document.getElementById("city").addEventListener("blur", function () {
-//    "use strict";
-//    validate();
-//});
-//
-////  Run validate function when leaving state field
-//document.getElementById("state").addEventListener("blur", function () {
-//    "use strict";
-//    validate();
-//});
-//
-////  Run validate function when leaving zipcode field
-//document.getElementById("zipcode").addEventListener("blur", function () {
-//    "use strict";
-//    validate();
-//});
-//
-////  Run validate function when leaving phone field
-//document.getElementById("phone").addEventListener("blur", function () {
-//    "use strict";
-//    validate();
-//});
-//
-////  Run validate function when leaving email field
-//document.getElementById("email").addEventListener("blur", function () {
-//    "use strict";
-//    validate();
-//});
+});
 
 //  PRICES
 var cheesePrices = {
@@ -154,7 +150,7 @@ var glutenFree = {
     choose: ["Choose a Size", 0],
     small: ["Small ($10.99)", 10.99]
 };
-
+//  Load crust options depending on selected crust type
 function insertCrustOptions() {
     "use strict";
     var theList = document.getElementById("theCrust"),
@@ -185,22 +181,18 @@ function insertCrustOptions() {
         theList.options[1] = new Option(glutenFree.small[0], glutenFree.small[1]);
     }
 }
-
 document.getElementById("handTossed").addEventListener("change", function () {
     "use strict";
     insertCrustOptions();
 });
-
 document.getElementById("thinCrust").addEventListener("change", function () {
     "use strict";
     insertCrustOptions();
 });
-
 document.getElementById("newYork").addEventListener("change", function () {
     "use strict";
     insertCrustOptions();
 });
-
 document.getElementById("glutenFree").addEventListener("change", function () {
     "use strict";
     insertCrustOptions();
@@ -216,17 +208,18 @@ document.getElementById("theCrust").addEventListener("change", function () {
     showExtras.classList.remove("extras");
 });
 
-//  Show Billing Info once Finished Building Pizza is Confirmed
+//  Show Billing Info once Finished Building Pizza is Confirmed and hide Finished Building button
 var hideBilling = document.getElementById("billingInfo");
 hideBilling.classList.add("hideBilling");
 
 document.getElementById("finishedBuilding").addEventListener("click", function () {
     "use strict";
     var confirmOptions = window.confirm("Are You Sure You're Done?"),
-        showBilling = document.getElementById("billingInfo");
-
+        showBilling = document.getElementById("billingInfo"),
+        finishedBuilding = document.getElementById("finishedBuilding");
     if (confirmOptions === true) {
         showBilling.classList.remove("hideBilling");
+        finishedBuilding.classList.add("hideme");
     }
 });
 
@@ -260,10 +253,11 @@ function getSaucePrice() {
 
 function getToppingsPrice() {
     "use strict";
-    var toppingPrice = 0,
+    var i = 0,
+        toppingPrice = 0,
         checkboxes = document.getElementsByName("topping"),
         selected = [];
-    for (var i = 0; i < checkboxes.length; i++) {
+    for (i = 0; i < checkboxes.length; i += 1) {
         if (checkboxes[i].checked) {
             selected.push(checkboxes[i].value);
             toppingPrice = selected.length * 0.99;
@@ -280,29 +274,23 @@ function calculateTotal() {
         roundedTotal = Math.round(pizzaPrice * 100) / 100;
     priceField.style.display = 'block';
     priceField.innerHTML = "Total Pizza Cost: $" + roundedTotal;
-    //    window.console.log(pizzaPrice);
 }
-
+//  Update total when options change
 document.getElementById("theCrust").addEventListener("change", function () {
     "use strict";
     getCrustPrice();
     calculateTotal();
 });
-
-
 document.getElementById("cheese").addEventListener("change", function () {
     "use strict";
     getCheesePrice();
     calculateTotal();
 });
-
-
 document.getElementById("sauce").addEventListener("change", function () {
     "use strict";
     getSaucePrice();
     calculateTotal();
 });
-
 
 document.getElementById("pepperoni").addEventListener("change", function () {
     "use strict";
@@ -390,7 +378,7 @@ function ccVerify() {
         return false;
     }
 }
-
+//  Check CC validation when leaving field
 document.getElementById("cardNumber").addEventListener("blur", function () {
     "use strict";
     ccVerify();
@@ -403,7 +391,8 @@ function cardType() {
         cardTemp = document.pizzaForm.cardNumber.value,
         firstNum = cardTemp.charAt(0),
         secondNum = cardTemp.charAt(1),
-        whatType = "Invalid";
+        whatType = "Invalid",
+        newParagraph = document.createElement("p");
     // As long as <div> has a child node, remove it
     while (list.hasChildNodes()) {
         list.removeChild(list.firstChild);
@@ -439,12 +428,12 @@ function cardType() {
         window.console.log("Not a valid card vendor");
     }
 }
-
+//  Check CC type when leaving field
 document.getElementById("cardNumber").addEventListener("blur", function () {
     "use strict";
     cardType();
 });
-
+//  CC validation function
 function ccValidate() {
     "use strict";
     var list = document.getElementById("invalidCard");
@@ -492,19 +481,28 @@ function cvcValidate() {
         return false;
     }
 }
-
 //  Run validate function when leaving CC field
 document.getElementById("cardNumber").addEventListener("blur", function () {
     "use strict";
     ccValidate();
 });
-
 //  Run validate function when leaving CVC field
 document.getElementById("cvc").addEventListener("blur", function () {
     "use strict";
     cvcValidate();
 });
 
+//  Initially hide Place Order button
+function hidePlaceOrder() {
+    "use strict";
+    var placeOrder = document.getElementById('placeOrder');
+    placeOrder.style.display = 'none';
+}
+if (document.addEventListener) {
+    document.addEventListener("DOMContentLoaded", hidePlaceOrder, false);
+}
+
+//  Check CC expiration and show Place Order button if OK
 function checkCardExp() {
     "use strict";
     var d1 = new Date();
@@ -514,16 +512,15 @@ function checkCardExp() {
     if (d1 < d2) {
         window.alert("The Expiration Date can not be in the past");
     } else {
-        window.console.log("The Exp. Date is OK");
+        var placeOrder = document.getElementById('placeOrder');
+        placeOrder.style.display = 'block';
     }
 }
-
 //  Run checkCardExp function when selecting Expiration Year or Month options
 document.getElementById("month").addEventListener("change", function () {
     "use strict";
     checkCardExp();
 });
-
 document.getElementById("year").addEventListener("change", function () {
     "use strict";
     checkCardExp();
